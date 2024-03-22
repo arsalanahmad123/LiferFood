@@ -1,27 +1,48 @@
 .active {
-  color: #ffb100;
-  background-color: #fff4d9;
-  font-weight: 600;
+    color: #f58201;
+    background-color: #fff4d9;
+    font-weight: 600;
 }
 .active::before {
-  position: absolute;
-  top: 0;
-  left: 2px;
-  content: "";
-  width: 4px;
-  height: 35px;
-  background-color: #ffb100;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+    position: absolute;
+    top: 0;
+    left: 2px;
+    content: '';
+    width: 4px;
+    height: 35px;
+    background-color: #f58201;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .page-active {
-  color: white;
-  background-color: #ffb100;
-  box-shadow: 1px 1px 4px rgb(70, 66, 85, 0.3);
-  font-weight: 600;
+    color: white;
+    background-color: #f58201;
+    box-shadow: 1px 1px 4px rgb(70, 66, 85, 0.3);
+    font-weight: 600;
 }
 
 .sidebar-active {
-  display: block;
+    display: block;
+}
+
+.scrollable {
+    overflow-y: auto;
+}
+
+.scrollable::-webkit-scrollbar {
+    width: 13px;
+    height: 7px;
+    background-color: #fff4d9;
+}
+
+.scrollable::-moz-scrollbar {
+    width: 7px;
+    height: 7px;
+    background-color: #fff4d9;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    background-color: #f58201;
+    border-radius: 20px;
 }

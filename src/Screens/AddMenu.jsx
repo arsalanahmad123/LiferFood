@@ -7,29 +7,24 @@ import {
     FaCloudUploadAlt,
     FaChevronCircleDown,
 } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getCategories, getVariants } from '../Services/Restaurant'
-import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import resturantApi from '../Services/restaurantapi'
+import Spin from '../Components/Spin'
 
-const AddMenu = ({ edit }) => {
+const AddMenu = () => {
     const [images, setImages] = useState([])
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [categories, setCategories] = useState()
     const [variants, setVariants] = useState()
-    const [productVariants, setProductVariants] = useState([])
-    const [isDiscount, setIsDiscount] = useState(false)
-    const [variantPrice, setVariantPrice] = useState('')
-    const [discountPrice, setDiscountPrice] = useState('')
-    const [selectedVariants, setSelectedVariants] = useState(null)
+    const [selectedVariants, setSelectedVariants] = useState([])
     const [isVisible, setIsVisible] = useState({})
     const [finalVariant, setFinalVariant] = useState([])
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm()
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [create, setCreating] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
 
@@ -63,78 +58,94 @@ const AddMenu = ({ edit }) => {
         setImages((prevImages) => prevImages.filter((_, i) => i !== index))
     }
 
-    const createProduct = async (data) => {
+    const createProduct = async (e) => {
+        e.preventDefault()
         if (selectedCategory == null) {
             toast.error('Select category')
             return
         }
-        if (finalVariant.length < 1) {
+        if (selectedVariants.length < 1) {
             toast.error('Add at least one variant')
             return
         }
 
-        const response = await resturantApi.post('/products', {
-            category_id: selectedCategory,
-            name: data.productName,
-            discription: data.productDescription,
-            display_picture: dummyImage,
-            product_variants: finalVariant,
-            is_available: true,
-        })
-        console.log(response)
+        if (name === '') {
+            toast.error("Product name can't be empty")
+            return
+        }
+        if (description === '') {
+            toast.error("Product description can't be empty")
+            return
+        }
+        try {
+            setCreating(!create)
+
+            const response = await resturantApi.post('/products', {
+                category_id: selectedCategory,
+                name,
+                description,
+                is_available: true,
+                product_variants: finalVariant,
+            })
+
+            if (response.data.success === true) {
+                toast.success(response.data.message)
+                setCreating(!create)
+                navigate('/menu')
+            }
+        } catch (error) {
+            setCreating(!create)
+            toast.error(error.response.data.message)
+        }
     }
+    const addProductVariant = (variant) => {
+        const isVariantExist = selectedVariants.find((v) => v.id === variant.id)
 
-    const addProductVariant = (variantID) => {
-        const variantExists = productVariants.some(
-            (variant) => variant.variant.id === variantID.id,
-        )
+        if (!isVariantExist) {
+            const price = document.getElementById(`price-${variant.id}`).value
+            const is_discount = document.getElementById(
+                `isDiscount-${variant.id}`,
+            ).checked
 
-        if (!variantExists) {
-            if (variantPrice == 0) {
-                toast.error('Variant price cannot be zero')
-                return
-            }
-            if (isDiscount && discountPrice === 0) {
-                toast.error(
-                    'If Discount selected, discount price cannot be zero',
-                )
-                return
-            }
-            setProductVariants((prevVariants) => [
+            const discount_price = document.getElementById(
+                `discount-${variant.id}`,
+            ).value
+            setSelectedVariants((prevVariants) => [
                 ...prevVariants,
                 {
-                    variant: variantID,
-                    price: variantPrice,
-                    is_discount: isDiscount,
-                    discount_price: discountPrice,
+                    variant_id: variant.id,
+                    name: variant.name,
+                    price: price,
+                    is_discount: is_discount,
+                    discount: discount_price,
+                },
+            ])
+            setFinalVariant((prevVariants) => [
+                ...prevVariants,
+                {
+                    variant_id: variant.id,
+                    price: price,
+                    is_discount: is_discount,
+                    discount: discount_price,
                 },
             ])
         }
-        setFinalVariant((prevVariant) => [
-            ...prevVariant,
-            {
-                variant_id: variantID.id,
-                price: variantPrice,
-                is_discount: isDiscount,
-                discount: discountPrice,
-            },
-        ])
-        setIsDiscount(!isDiscount)
-        setVariantPrice('')
-        setDiscountPrice('')
-        console.log('Handle Product Add called')
+
+        // Close the visibility of the variant
+        setIsVisible((prevState) => ({
+            ...prevState,
+            [variant.id]: false,
+        }))
     }
 
     const handleRemoveVariant = (variantID) => {
-        console.log('Handle Remove Variant called')
-        setProductVariants((prevVariants) =>
-            prevVariants.filter(
-                (variant) => variant.variant.id !== variantID.id,
-            ),
+        setSelectedVariants((prevVariants) =>
+            prevVariants.filter((variant) => variant.id !== variantID),
         )
     }
 
     useEffect(() => {
+        setLoading(true)
         const fetchCategories = async () => {
             const responsecategories = await getCategories()
             setCategories(responsecategories.data)
@@ -142,10 +153,11 @@ const AddMenu = ({ edit }) => {
         const fetchVariants = async () => {
             const responsevariants = await getVariants()
             setVariants(responsevariants.data)
-            setSelectedVariants(responsevariants.data)
         }
-        fetchCategories()
+
         fetchVariants()
+        fetchCategories()
+        setLoading(false)
     }, [])
 
     return (
@@ -155,7 +167,7 @@ const AddMenu = ({ edit }) => {
                 para='Simplified Menu Management'
             />
             <form
-                onSubmit={handleSubmit(createProduct)}
+                onSubmit={createProduct}
                 className='grid grid-cols-12  gap-x-5 md:mx-20 mt-10 mx-4 gap-y-5'
             >
                 <div className='md:col-span-6 col-span-12 flex flex-col justify-start items-start gap-y-5'>
@@ -165,77 +177,49 @@ const AddMenu = ({ edit }) => {
                             onClick={() => navigate(-1)}
                             className='cursor-pointer'
                         />
-                        <h3 className='text-2xl '>Update Menu Item</h3>
+                        <h3 className='text-2xl '>Create Menu Item</h3>
                     </div>
                     <div className='flex flex-col justify-start items-start gap-y-5 w-full'>
                         <div className='bg-white rounded-lg p-5 flex flex-col gap-y-5 w-full'>
                             <div className='flex flex-col justify-start items-start'>
-                                <label htmlFor='productName' className='mb-1'>
+                                <label
+                                    htmlFor='productName'
+                                    className='mb-1 font-semibold text-lg'
+                                >
                                     Product Name
                                 </label>
                                 <input
                                     type='text'
                                     name='productName'
                                     id='productName'
+                                    value={name}
                                     className='form-input rounded-md w-full'
-                                    {...register('productName', {
-                                        required: 'Product name is required',
-                                        pattern: {
-                                            value: /^[a-zA-Z0-9\s]*$/,
-                                            message:
-                                                'Product name can only contain letters and numbers',
-                                        },
-                                        minLength: {
-                                            value: 3,
-                                            message:
-                                                'Product name must be at least 3 characters',
-                                        },
-                                        maxLength: {
-                                            value: 100,
-                                            message:
-                                                'Product name must be less than 100 characters',
-                                        },
-                                    })}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
-                                {errors.productName && (
-                                    <p className='text-red-500 text-sm'>
-                                        {errors.productName.message}
-                                    </p>
-                                )}
                             </div>
                             <div className='flex flex-col justify-start items-start'>
                                 <label
                                     htmlFor='productDescription'
-                                    className='mb-1'
+                                    className='mb-1 font-semibold text-lg'
                                 >
                                     Product Description
                                 </label>
                                 <textarea
                                     name='productDescription'
                                     id='productDescription'
+                                    value={description}
                                     className='form-textarea rounded-md w-full'
-                                    {...register('productDescription', {
-                                        required:
-                                            'Product description is required',
-                                        minLength: {
-                                            value: 10,
-                                            message:
-                                                'Product description must be at least 10 characters',
-                                        },
-                                        maxLength: {
-                                            value: 500,
-                                            message:
-                                                'Product description must be less than 500 characters',
-                                        },
-                                    })}
+                                    onChange={(e) =>
+                                        setDescription(e.target.value)
+                                    }
                                 />
-                                {errors.productDescription && (
-                                    <p className='text-red-500 text-sm'>
-                                        {errors.productDescription.message}
-                                    </p>
-                                )}
                             </div>
-                            <label htmlFor='images'>Images</label>
+                            <label
+                                htmlFor='images'
+                                className='font-semibold text-lg'
+                            >
+                                Images
+                            </label>
                             <div className='border-2 border-dashed p-2'>
                                 <label
                                     htmlFor='productImages'
@@ -285,30 +269,36 @@ const AddMenu = ({ edit }) => {
                             >
                                 Select Category
                             </label>
-                            <div className='flex flex-row flex-wrap gap-y-2 justify-start items-center gap-x-3'>
-                                {categories?.map((category, index) => (
-                                    <label
-                                        htmlFor={`category-${category.id}`}
-                                        className={`p-2 rounded-full border text-xs md:text-sm ${
-                                            selectedCategory === category.id
-                                                ? 'bg-textActive text-white'
-                                                : 'text-gray-600 bg-white'
-                                        } cursor-pointer`}
-                                        key={index}
-                                    >
-                                        <input
-                                            type='radio'
-                                            id={`category-${category.id}`}
-                                            name='category'
-                                            value={category.name}
-                                            className='mr-1 hidden'
-                                            onChange={() =>
-                                                setSelectedCategory(category.id)
-                                            }
-                                        />
-                                        {category.name}
-                                    </label>
-                                ))}
+                            <div className='flex flex-row flex-wrap gap-y-2 justify-start items-center gap-x-3 font-semibold'>
+                                {loading ? (
+                                    <Spin />
+                                ) : (
+                                    categories?.map((category, index) => (
+                                        <label
+                                            htmlFor={`category-${category.id}`}
+                                            className={`p-2 rounded-full border text-xs md:text-sm ${
+                                                selectedCategory === category.id
+                                                    ? 'bg-textActive text-white'
+                                                    : 'text-gray-600 bg-white'
+                                            } cursor-pointer`}
+                                            key={index}
+                                        >
+                                            <input
+                                                type='radio'
+                                                id={`category-${category.id}`}
+                                                name='category'
+                                                value={category.name}
+                                                className='mr-1 hidden'
+                                                onChange={() =>
+                                                    setSelectedCategory(
+                                                        category.id,
+                                                    )
+                                                }
+                                            />
+                                            {category.name}
+                                        </label>
+                                    ))
+                                )}
                             </div>
                         </div>
                     </div>
@@ -321,108 +311,113 @@ const AddMenu = ({ edit }) => {
                         >
                             Variants
                         </label>
-                        {productVariants?.length > 0 && (
+                        {selectedVariants?.length > 0 && (
                             <div className='flex flex-row justify-between items-center'>
-                                {productVariants.map((variant, index) => (
+                                {selectedVariants?.map((variant, index) => (
                                     <span
                                         key={index}
-                                        className='text-gray-600 bg-slate-100 rounded-full text-sm px-4 py-1 relative'
+                                        className='text-gray-600 bg-white rounded-full text-sm px-4 py-1 relative border'
                                     >
-                                        {variant.variant.name}
+                                        {variant.name ||
+                                            variants.map(
+                                                (v) =>
+                                                    v.id ===
+                                                        variant.variant_id &&
+                                                    v.name,
+                                            )}
                                         <FaTimes
-                                            className='absolute top-0 right-0 cursor-pointer'
+                                            className='absolute -top-1 -right-1 cursor-pointer text-textActive'
                                             onClick={() =>
-                                                handleRemoveVariant(
-                                                    variant.variant,
-                                                )
+                                                handleRemoveVariant(variant.id)
                                             }
                                         />
                                     </span>
                                 ))}
                             </div>
                         )}
-                        <div className='flex flex-col  mb-2 gap-y-3 mt-5'>
-                            {selectedVariants?.map((variant, index) => (
-                                <div
-                                    className='flex flex-col bg-slate-100 p-2 rounded-md'
-                                    key={variant.id}
-                                >
-                                    <div className='flex flex-row justify-between items-center mb-2 cursor-pointer'>
-                                        <span className='font-semibold text-[14px]'>
-                                            {variant.name}
-                                        </span>
-                                        <FaChevronCircleDown
-                                            size={20}
-                                            onClick={() =>
-                                                toggleVisibility(variant.id)
-                                            }
-                                        />
-                                    </div>
-                                    {isVisible[variant.id] && (
-                                        <div className='flex flex-col  justify-center items-start flex-wrap  gap-y-2'>
-                                            <input
-                                                type='number'
-                                                name='price'
-                                                id='price'
-                                                className='px-3 py-1 rounded-md w-3/6 md:w-full'
-                                                placeholder='Price '
-                                                value={variantPrice}
-                                                onChange={(e) => {
-                                                    setVariantPrice(
-                                                        e.target.value,
-                                                    )
-                                                }}
-                                            />
-
-                                            <label htmlFor='isDiscount'>
-                                                <input
-                                                    type='checkbox'
-                                                    name='isDiscount'
-                                                    id='isDiscount'
-                                                    className='mr-1 rounded-md outline-none ring-0 focus:ring-0 focus:outline-none'
-                                                    onChange={() => {
-                                                        setIsDiscount(
-                                                            !isDiscount,
-                                                        )
-                                                    }}
-                                                />
-                                                Is Discount
-                                            </label>
-                                            <input
-                                                type='number'
-                                                name='discount'
-                                                id='discount'
-                                                className='px-3 py-1 rounded-md w-3/6 md:w-full'
-                                                placeholder='Discount'
-                                                value={discountPrice}
-                                                onChange={(e) => {
-                                                    setDiscountPrice(
-                                                        e.target.value,
-                                                    )
-                                                }}
-                                            />
-
-                                            <button
-                                                className='text-white bg-textActive rounded-md w-fit px-5 py-1 ml-auto font-semibold'
-                                                type='button'
+                        {loading ? (
+                            <Spin />
+                        ) : (
+                            <div className='flex flex-col  mb-2 gap-y-3 mt-5'>
+                                {variants?.map((variant, index) => (
+                                    <div
+                                        className='flex flex-col bg-textActive p-2 rounded-md'
+                                        key={variant.id}
+                                    >
+                                        <div className='flex flex-row justify-between items-center mb-2 cursor-pointer'>
+                                            <span className='font-semibold text-[14px] text-white'>
+                                                {variant.name}
+                                            </span>
+                                            <FaChevronCircleDown
+                                                size={20}
+                                                className='text-white'
                                                 onClick={() =>
-                                                    addProductVariant(variant)
+                                                    toggleVisibility(variant.id)
                                                 }
-                                            >
-                                                Add
-                                            </button>
+                                            />
                                         </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+                                        {isVisible[variant.id] && (
+                                            <div className='flex flex-col  justify-center items-start flex-wrap  gap-y-2 text-gray-800'>
+                                                <input
+                                                    type='number'
+                                                    id={`price-${variant.id}`}
+                                                    className='px-3 py-1 rounded-md w-3/6 md:w-full text-gray-800'
+                                                    placeholder='Price '
+                                                />
+
+                                                <label htmlFor='isDiscount'>
+                                                    <input
+                                                        type='checkbox'
+                                                        id={`isDiscount-${variant.id}`}
+                                                        className='mr-1 rounded-md outline-none ring-0 focus:ring-0 focus:outline-none'
+                                                    />
+                                                    Is Discount
+                                                </label>
+                                                <input
+                                                    type='number'
+                                                    id={`discount-${variant.id}`}
+                                                    className='px-3 py-1 rounded-md w-3/6 md:w-full text-gray-800'
+                                                    placeholder='Discount'
+                                                />
+
+                                                <button
+                                                    className='text-textActive bg-white rounded-md w-fit px-5 py-1 ml-auto font-semibold'
+                                                    type='button'
+                                                    onClick={() =>
+                                                        addProductVariant(
+                                                            variant,
+                                                        )
+                                                    }
+                                                >
+                                                    Add
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    <div className='flex justify-between items-center p-4 bg-white rounded-md'>
+                        <button
+                            type='button'
+                            className='bg-textActive text-white rounded-md px-2 py-1'
+                        >
+                            New Category
+                        </button>
+                        <button
+                            type='button'
+                            className='bg-textActive text-white rounded-md px-2 py-1'
+                        >
+                            New Variant
+                        </button>
                     </div>
                 </div>
                 <button
                     type='submit'
                     className='bg-textActive text-white rounded-md px-4 py-2 col-span-12 md:col-span-3 font-semibold w-full md:w-auto'
                 >
-                    Create
+                    {create ? 'Creating' : 'Add'}
                 </button>
             </form>
         </Wrapper>

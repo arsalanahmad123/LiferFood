@@ -9,7 +9,6 @@ import Revenue from './Screens/Revenue'
 import { createPortal } from 'react-dom'
 import Overlay from './Components/Overlay'
 const Rider = lazy(() => import('./Screens/Rider'))
-import RiderForm from './Components/RiderForm'
 import HelpForm from './Components/HelpForm'
 import Representator from './Components/Representator'
 const Menu = lazy(() => import('./Screens/Menu'))
@@ -20,21 +19,20 @@ const Signup = lazy(() => import('./Screens/Signup'))
 import { useAuth } from './Context/AuthContext.jsx'
 import ProtectedRoute from './Components/ProtectedRoute'
 import { Toaster } from 'react-hot-toast'
-import Loader from './Components/Loader.jsx'
+import Loader from './Components/Loader'
 const OTP = lazy(() => import('./Screens/OTP'))
+const RegRestaurant = lazy(() => import('./Screens/RegRestaurant'))
+const Chat = lazy(() => import('./Screens/Chat'))
+const Notification = lazy(() => import('./Screens/Notification'))
 
 function App() {
     const [overlay, setOverlay] = useState(false)
-    const [showRiderForm, setShowRiderForm] = useState(false)
+
     const [showRepresentator, setShowRepresentator] = useState(false)
     const [showRevenueForm, setShowRevenueForm] = useState(false)
 
     const { loading } = useAuth()
 
-    const toggleRiderForm = () => {
-        setShowRiderForm(!showRiderForm)
-        setOverlay(!overlay)
-    }
     const toggleRepresentator = () => {
         setShowRepresentator(!showRepresentator)
         setOverlay(!overlay)
@@ -65,6 +63,11 @@ function App() {
                                 path='/orders'
                             />
                             <Route
+                                key={'RegRestaurant'}
+                                element={<RegRestaurant />}
+                                path='register-restaurant'
+                            />
+                            <Route
                                 key='help'
                                 element={
                                     <Help
@@ -86,9 +89,7 @@ function App() {
                             />
                             <Route
                                 key='riders'
-                                element={
-                                    <Rider toggleRiderForm={toggleRiderForm} />
-                                }
+                                element={<Rider />}
                                 path='/riders'
                             />
                             <Route
@@ -101,13 +102,17 @@ function App() {
                                 element={<Menu />}
                                 path='/menu/*'
                             />
-                            ,
                             <Route
                                 key='add-menu'
                                 element={<AddMenu />}
                                 path='/add-menu'
                             />
-                            ,
+                            <Route key='chat' element={<Chat />} path='/chat' />
+                            <Route
+                                key='notification'
+                                element={<Notification />}
+                                path='/notification'
+                            />
                         </Route>
                         <Route element={<Login />} path='/account/login' />
                         <Route element={<Signup />} path='/account/signup' />
@@ -116,15 +121,6 @@ function App() {
                 </Suspense>
             </BrowserRouter>
 
-            {showRiderForm && (
-                <>
-                    {createPortal(
-                        <RiderForm />,
-                        document.getElementById('modal'),
-                    )}
-                    <Overlay toggleOverlay={toggleRiderForm} />
-                </>
-            )}
             {showRepresentator && (
                 <>
                     {createPortal(

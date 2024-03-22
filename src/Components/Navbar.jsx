@@ -1,36 +1,34 @@
-import React, { lazy, useState } from 'react'
+import React, { useState } from 'react'
 import { GoBell } from 'react-icons/go'
-import { BiSolidMessageSquareDots } from 'react-icons/bi'
+import { BiSolidMessageSquareDots, BiSearch } from 'react-icons/bi'
 import { HiMiniBars3BottomLeft } from 'react-icons/hi2'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useAuth } from '../Context/AuthContext'
-import { createPortal } from 'react-dom'
 import toast from 'react-hot-toast'
-const Overlay = lazy(() => import('./Overlay'))
-import Chat from '../Screens/Chat'
-import Notification from '../Screens/Notification'
 
 const Navbar = () => {
     const [showProfileDropdown, setShowProfileDropdown] = useState(false)
-    const [overlay, setOverlay] = useState(false)
     const [showChat, setShowChat] = useState(false)
     const [showNotification, setShowNotification] = useState(false)
-    const navigate = useNavigate()
 
     const { logoutUser, loggedIn, user } = useAuth()
 
     const handleLogout = () => {
         toast('You have been logged out')
         logoutUser()
-        navigate('/account/login')
     }
     const toggleChat = () => {
         setShowChat(!showChat)
-        setOverlay(!overlay)
+
+        if (showNotification) {
+            setShowNotification(false)
+        }
     }
     const toggleNotification = () => {
         setShowNotification(!showNotification)
-        setOverlay(!overlay)
+        if (showChat) {
+            setShowChat(false)
+        }
     }
 
     const handleSidebarToggle = () => {
@@ -57,13 +55,122 @@ const Navbar = () => {
                         onClick={handleSidebarToggle}
                     />
                 </div>
-                <div className='flex flex-row gap-x-3 md:border-r md:border-gray-400 px-5 md:pl-[40%]'>
+                <div className='flex flex-row gap-x-3 md:border-r md:border-gray-400 px-5 md:pl-[40%] relative'>
                     <div
-                        className='bg-linkBg p-2 rounded-lg text-textActive font-extrabold cursor-pointer relative'
+                        className='bg-linkBg p-2 rounded-lg font-extrabold cursor-pointer relative'
                         onClick={toggleNotification}
                     >
-                        <GoBell />
+                        <GoBell className='text-textActive' />
                         <div className='w-[15px] h-[15px] bg-primary rounded-full absolute top-[-5px] right-[-5px]'></div>
+                        {showNotification && (
+                            <div
+                                className='bg-white shadow-xl flex flex-col absolute md:w-[300px] w-[200px] top-10 -right-28 rounded-lg max-h-[300px] scrollable '
+                                style={{ zIndex: 9999 }}
+                            >
+                                <div className='bg-slate-200 flex flex-row justify-between items-center p-2 rounded-tl-lg'>
+                                    <h4 className='text-sm'>
+                                        DMs From Customers
+                                    </h4>
+                                    <BiSearch />
+                                </div>
+                                <div className=' max-h-full py-1 px-1'>
+                                    <ul className='flex flex-col'>
+                                        <li className='w-full hover:bg-textActive hover:text-white hover:rounded-md transition-all duration-300 ease-in-out'>
+                                            <div className='mx-auto flex flex-row justify-center items-start  p-1  cursor-pointer gap-x-6 border-b lg:border-none'>
+                                                <div className='w-10 rounded-full'>
+                                                    <img
+                                                        src='https://i.pravatar.cc/50'
+                                                        alt=''
+                                                        className='rounded-full'
+                                                    />
+                                                </div>
+                                                <div className='flex flex-col'>
+                                                    <span className='font-medium'>
+                                                        Username
+                                                    </span>
+                                                    <span className='text-sm '>
+                                                        Lorem ipsum dolor sit
+                                                        amet.
+                                                    </span>
+                                                </div>
+                                                <div className='text-xs font-semibold'>
+                                                    <span>10/19</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className='w-full hover:bg-textActive hover:text-white hover:rounded-md transition-all duration-300 ease-in-out'>
+                                            <div className='mx-auto flex flex-row justify-center items-start  p-1  cursor-pointer gap-x-6 border-b lg:border-none'>
+                                                <div className='w-10 rounded-full'>
+                                                    <img
+                                                        src='https://i.pravatar.cc/50'
+                                                        alt=''
+                                                        className='rounded-full'
+                                                    />
+                                                </div>
+                                                <div className='flex flex-col'>
+                                                    <span className='font-medium'>
+                                                        Username
+                                                    </span>
+                                                    <span className='text-sm '>
+                                                        Lorem ipsum dolor sit
+                                                        amet.
+                                                    </span>
+                                                </div>
+                                                <div className='text-xs font-semibold'>
+                                                    <span>10/19</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className='w-full hover:bg-textActive hover:text-white hover:rounded-md transition-all duration-300 ease-in-out'>
+                                            <div className='mx-auto flex flex-row justify-center items-start  p-1  cursor-pointer gap-x-6 border-b lg:border-none'>
+                                                <div className='w-10 rounded-full'>
+                                                    <img
+                                                        src='https://i.pravatar.cc/50'
+                                                        alt=''
+                                                        className='rounded-full'
+                                                    />
+                                                </div>
+                                                <div className='flex flex-col'>
+                                                    <span className='font-medium'>
+                                                        Username
+                                                    </span>
+                                                    <span className='text-sm'>
+                                                        Lorem ipsum dolor sit
+                                                        amet.
+                                                    </span>
+                                                </div>
+                                                <div className='text-xs font-semibold'>
+                                                    <span>10/19</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className='w-full hover:bg-textActive hover:text-white hover:rounded-md transition-all duration-300 ease-in-out'>
+                                            <div className='mx-auto flex flex-row justify-center items-start  p-1  cursor-pointer gap-x-6 border-b lg:border-none'>
+                                                <div className='w-10 rounded-full'>
+                                                    <img
+                                                        src='https://i.pravatar.cc/50'
+                                                        alt=''
+                                                        className='rounded-full'
+                                                    />
+                                                </div>
+                                                <div className='flex flex-col'>
+                                                    <span className='font-medium'>
+                                                        Username
+                                                    </span>
+                                                    <span className='text-sm'>
+                                                        Lorem ipsum dolor sit
+                                                        amet.
+                                                    </span>
+                                                </div>
+                                                <div className='text-xs font-semibold'>
+                                                    <span>10/19</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <div
                         className='bg-linkBg p-2 rounded-lg text-textActive font-extrabold cursor-pointer relative'
@@ -72,6 +179,109 @@ const Navbar = () => {
                         <BiSolidMessageSquareDots />
                         <div className='w-[15px] h-[15px] bg-primary rounded-full absolute top-[-5px] right-[-5px]'></div>
                     </div>
+                    {showChat && (
+                        <div
+                            className='bg-white shadow-xl flex flex-col absolute md:w-[300px] w-[200px] top-10 -right-28 rounded-lg max-h-[300px] scrollable '
+                            style={{ zIndex: 9999 }}
+                        >
+                            <div className='bg-slate-200 flex flex-row justify-between items-center p-2 rounded-tl-lg'>
+                                <h4 className='text-sm'>DMs From Customers</h4>
+                                <BiSearch />
+                            </div>
+                            <div className=' max-h-full py-1 px-1'>
+                                <ul className='flex flex-col'>
+                                    <li className='w-full hover:bg-textActive hover:text-white hover:rounded-md transition-all duration-300 ease-in-out'>
+                                        <div className='mx-auto flex flex-row justify-center items-start  p-1  cursor-pointer gap-x-6 border-b lg:border-none'>
+                                            <div className='w-10 rounded-full'>
+                                                <img
+                                                    src='https://i.pravatar.cc/50'
+                                                    alt=''
+                                                    className='rounded-full'
+                                                />
+                                            </div>
+                                            <div className='flex flex-col'>
+                                                <span className='font-medium'>
+                                                    Username
+                                                </span>
+                                                <span className='text-sm '>
+                                                    Lorem ipsum dolor sit amet.
+                                                </span>
+                                            </div>
+                                            <div className='text-xs font-semibold'>
+                                                <span>10/19</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li className='w-full hover:bg-textActive hover:text-white hover:rounded-md transition-all duration-300 ease-in-out'>
+                                        <div className='mx-auto flex flex-row justify-center items-start  p-1  cursor-pointer gap-x-6 border-b lg:border-none'>
+                                            <div className='w-10 rounded-full'>
+                                                <img
+                                                    src='https://i.pravatar.cc/50'
+                                                    alt=''
+                                                    className='rounded-full'
+                                                />
+                                            </div>
+                                            <div className='flex flex-col'>
+                                                <span className='font-medium'>
+                                                    Username
+                                                </span>
+                                                <span className='text-sm '>
+                                                    Lorem ipsum dolor sit amet.
+                                                </span>
+                                            </div>
+                                            <div className='text-xs font-semibold'>
+                                                <span>10/19</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li className='w-full hover:bg-textActive hover:text-white hover:rounded-md transition-all duration-300 ease-in-out'>
+                                        <div className='mx-auto flex flex-row justify-center items-start  p-1  cursor-pointer gap-x-6 border-b lg:border-none'>
+                                            <div className='w-10 rounded-full'>
+                                                <img
+                                                    src='https://i.pravatar.cc/50'
+                                                    alt=''
+                                                    className='rounded-full'
+                                                />
+                                            </div>
+                                            <div className='flex flex-col'>
+                                                <span className='font-medium'>
+                                                    Username
+                                                </span>
+                                                <span className='text-sm'>
+                                                    Lorem ipsum dolor sit amet.
+                                                </span>
+                                            </div>
+                                            <div className='text-xs font-semibold'>
+                                                <span>10/19</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li className='w-full hover:bg-textActive hover:text-white hover:rounded-md transition-all duration-300 ease-in-out'>
+                                        <div className='mx-auto flex flex-row justify-center items-start  p-1  cursor-pointer gap-x-6 border-b lg:border-none'>
+                                            <div className='w-10 rounded-full'>
+                                                <img
+                                                    src='https://i.pravatar.cc/50'
+                                                    alt=''
+                                                    className='rounded-full'
+                                                />
+                                            </div>
+                                            <div className='flex flex-col'>
+                                                <span className='font-medium'>
+                                                    Username
+                                                </span>
+                                                <span className='text-sm'>
+                                                    Lorem ipsum dolor sit amet.
+                                                </span>
+                                            </div>
+                                            <div className='text-xs font-semibold'>
+                                                <span>10/19</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div className='text-primary hidden md:block'>
                     <span className='text-[15px]'>Welcome,{'   '}</span>
@@ -116,21 +326,6 @@ const Navbar = () => {
                     onClick={closeSideBar}
                 ></div>
             </div>
-            {showChat && (
-                <>
-                    {createPortal(<Chat />, document.getElementById('modal'))}
-                    <Overlay toggleOverlay={toggleChat} />
-                </>
-            )}
-            {showNotification && (
-                <>
-                    {createPortal(
-                        <Notification />,
-                        document.getElementById('modal'),
-                    )}
-                    <Overlay toggleOverlay={toggleNotification} />
-                </>
-            )}
         </>
     )
 }

@@ -27,10 +27,6 @@ const Login = () => {
                 const user = response.data
                 loginUser(user, response.data.token)
                 setRestaurant(user?.role_data)
-                localStorage.setItem(
-                    'restaurant',
-                    JSON.stringify(user?.role_data),
-                )
                 setIsLoading(false)
                 toast.success(response.message, { duration: 5000 })
                 navigate('/')
