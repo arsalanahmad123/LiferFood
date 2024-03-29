@@ -1,4 +1,4 @@
-import React, { Fragment, memo } from 'react'
+import React, { Fragment } from 'react'
 import logo from '../assets/logo.png'
 import Package from './Package'
 
@@ -26,4 +26,4 @@ const PackageScreen = () => {
     )
 }
 
-export default memo(PackageScreen)
+export default PackageScreen

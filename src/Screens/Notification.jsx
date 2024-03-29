@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react'
+import React, { useState,  } from 'react'
 import NotificationSideBar from '../Components/NotificationSideBar'
 import NotificationHolder from '../Components/NotificationHolder'
 
@@ -29,4 +29,4 @@ const Notification = () => {
     )
 }
 
-export default memo(Notification)
+export default (Notification)

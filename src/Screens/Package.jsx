@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react'
+import React, { useState } from 'react'
 import vector from '../assets/Vector.png'
 import { IoCheckmarkOutline } from 'react-icons/io5'
 
@@ -123,4 +123,4 @@ const Package = () => {
     )
 }
 
-export default memo(Package)
+export default Package

@@ -1,5 +1,5 @@
 import { Editor } from '@tinymce/tinymce-react'
-import { useState, memo } from 'react'
+import { useState } from 'react'
 const EditorComponent = () => {
     const [editorContent, setEditorContent] = useState('')
 
@@ -40,4 +40,4 @@ const EditorComponent = () => {
     )
 }
 
-export default memo(EditorComponent)
+export default EditorComponent

@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React from 'react'
 import Login from './Login'
 import Signup from './Signup'
 import { Routes, Route } from 'react-router-dom'
@@ -15,4 +15,4 @@ const Account = () => {
     )
 }
 
-export default memo(Account)
+export default Account

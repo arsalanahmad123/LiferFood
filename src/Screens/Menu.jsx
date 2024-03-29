@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react'
+import React, { useEffect, useState } from 'react'
 import Wrapper from '../Components/Wrapper'
 import RIderMenu from '../Components/RIderMenu'
 import { FiEdit } from 'react-icons/fi'
@@ -34,6 +34,8 @@ const MenuPage = () => {
         }
         getAllProducts()
     }, [])
+
+    console.log(products)
 
     const deleteProduct = async (id) => {
         if (window.confirm('Are you sure you want to delete this item?')) {
@@ -77,8 +79,8 @@ const MenuPage = () => {
                                     key={product?.id}
                                 >
                                     <img
-                                        src='/src/assets/product.png'
-                                        alt='Rider'
+                                        src={product?.display_picture}
+                                        alt='product image'
                                         className='rounded-lg w-full'
                                         loading='lazy'
                                     />
@@ -159,4 +161,4 @@ const Menu = () => {
     )
 }
 
-export default AppLayout(memo)(Menu)
+export default AppLayout()(Menu)

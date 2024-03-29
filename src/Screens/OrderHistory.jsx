@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import HeaderSection from '../Components/HeaderSection'
 import Wrapper from '../Components/Wrapper'
 import SearchArea from '../Components/SearchArea'
@@ -41,4 +40,4 @@ const OrderHistory = () => {
     )
 }
 
-export default AppLayout(memo)(OrderHistory)
+export default AppLayout()(OrderHistory)

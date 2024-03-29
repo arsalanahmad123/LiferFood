@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, memo } from 'react'
+import React, { Fragment, useEffect,  } from 'react'
 import logo from '../assets/logo.png'
 import { MdEmail } from 'react-icons/md'
 import { RiLockPasswordFill } from 'react-icons/ri'
@@ -169,4 +169,4 @@ const Login = () => {
     )
 }
 
-export default memo(Login)
+export default (Login)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react'
+import React, { useEffect, useState } from 'react'
 import Wrapper from '../Components/Wrapper'
 import HeaderSection from '../Components/HeaderSection'
 import {
@@ -14,7 +14,7 @@ import resturantApi from '../Services/restaurantapi'
 import Spin from '../Components/Spin'
 
 const AddMenu = () => {
-    const [images, setImages] = useState([])
+    const [images, setImages] = useState(null)
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [categories, setCategories] = useState()
     const [variants, setVariants] = useState()
@@ -35,11 +35,6 @@ const AddMenu = () => {
         }))
     }
 
-    const dummyImage = [
-        'https://picsum.photos/200',
-        'https://picsum.photos/200',
-    ]
-
     const handleImageChange = (e) => {
         const file = e.target.files[0]
 
@@ -47,15 +42,11 @@ const AddMenu = () => {
             const reader = new FileReader()
 
             reader.onloadend = () => {
-                setImages((prevImages) => [...prevImages, reader.result])
+                setImages(reader.result)
             }
 
             reader.readAsDataURL(file)
         }
-    }
-
-    const handleRemoveImage = (index) => {
-        setImages((prevImages) => prevImages.filter((_, i) => i !== index))
     }
 
     const createProduct = async (e) => {
@@ -80,12 +71,18 @@ const AddMenu = () => {
         try {
             setCreating(!create)
 
-            const response = await resturantApi.post('/products', {
-                category_id: selectedCategory,
-                name,
-                description,
-                is_available: true,
-                product_variants: finalVariant,
+            const formdata = new FormData()
+            formdata.append('category_id', selectedCategory)
+            formdata.append('name', name)
+            formdata.append('description', description)
+            formdata.append('is_available', true)
+            formdata.append('product_variants', JSON.stringify(finalVariant))
+            formdata.append('display_picture', images)
+
+            const response = await resturantApi.post('/products', formdata, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             })
 
             if (response.data.success === true) {
@@ -117,7 +114,7 @@ const AddMenu = () => {
                     name: variant.name,
                     price: price,
                     is_discount: is_discount,
-                    discount: discount_price,
+                    discount: is_discount ? discount_price : 0,
                 },
             ])
             setFinalVariant((prevVariants) => [
@@ -126,7 +123,7 @@ const AddMenu = () => {
                     variant_id: variant.id,
                     price: price,
                     is_discount: is_discount,
-                    discount: discount_price,
+                    discount: discount_price || 0,
                 },
             ])
         }
@@ -235,32 +232,23 @@ const AddMenu = () => {
                                         accept='image/*'
                                         className='hidden'
                                         id='productImages'
-                                        multiple
                                         onChange={handleImageChange}
                                     />
                                 </label>
                             </div>
                             {images && (
                                 <div className='flex flex-row justify-start items-center gap-x-3'>
-                                    {images?.map((img, index) => (
-                                        <div
-                                            className='w-24 h-24 border-2 border-dashed relative'
-                                            key={index}
-                                        >
-                                            <img
-                                                src={img}
-                                                alt='Product Image'
-                                                className='w-full h-full object-cover'
-                                            />
-                                            <FaTimes
-                                                className='absolute top-0 right-0 cursor-pointer'
-                                                size={20}
-                                                onClick={() =>
-                                                    handleRemoveImage(index)
-                                                }
-                                            />
-                                        </div>
-                                    ))}
+                                    <div className='w-24 h-24 border-2 border-dashed relative'>
+                                        <img
+                                            src={images}
+                                            alt='Product Image'
+                                            className='w-full h-full object-cover'
+                                        />
+                                        <FaTimes
+                                            className='absolute top-0 right-0 cursor-pointer'
+                                            size={20}
+                                        />
+                                    </div>
                                 </div>
                             )}
                             <label
@@ -424,4 +412,4 @@ const AddMenu = () => {
     )
 }
 
-export default memo(AddMenu)
+export default AddMenu

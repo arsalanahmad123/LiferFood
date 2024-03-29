@@ -26,14 +26,16 @@ const RiderForm = ({ toggleRiderForm, toggleLoading }) => {
     } = useForm()
 
     const createRider = async (data) => {
+        const formData = new FormData()
+
+        formData.append('first_name', data.firstname)
+        formData.append('last_name', data.lastname)
+        formData.append('contact_no', data.phone)
+        formData.append('email', data.email)
+        formData.append('password', data.password)
+
         try {
-            const response = await restaurantApi.post('/riders', {
-                first_name: data.firstname,
-                last_name: data.lastname,
-                contact_no: data.phone,
-                email: data.email,
-                password: data.password,
-            })
+            const response = await restaurantApi.post('/riders', formData)
 
             if (response.data.success === true) {
                 toast.success(response.data.message)

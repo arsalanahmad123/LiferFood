@@ -1,7 +1,6 @@
-import React, { memo, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Wrapper from '../Components/Wrapper'
 import RIderMenu from '../Components/RIderMenu'
-import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import AppLayout from '../Layout/AppLayout'
 import restaurantApi from '../Services/restaurantapi'
@@ -27,15 +26,20 @@ const Rider = () => {
         setLoading(!loading)
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const getRiders = async () => {
-            setFetching(true)
-            const response = await restaurantApi.get('/riders')
-            setRiders(response.data.data)
-            setFetching(false)
+            try {
+                setFetching(true)
+                const response = await restaurantApi.get('/riders')
+                setRiders(response.data.data)
+                setFetching(false)
+            } catch (error) {
+                setFetching(false)
+                toast.error(error.response.data.message)
+            }
         }
         getRiders()
-    }, [loading])
+    }, [])
 
     const deleteRider = async (id) => {
         try {
@@ -128,6 +132,11 @@ const Rider = () => {
                                     </div>
                                 ))
                             )}
+                            {riders?.length === 0 && (
+                                <div className='flex flex-col justify-center items-center'>
+                                    <h1>No Riders Found</h1>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -148,4 +157,4 @@ const Rider = () => {
     )
 }
 
-export default AppLayout(memo)(Rider)
+export default AppLayout()(Rider)

@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react'
+import React, { useState } from 'react'
 import ChatSideBar from '../Components/ChatSideBar'
 import ChatsLeft from '../Components/ChatsLeft'
 
@@ -29,4 +29,4 @@ const Chat = () => {
     )
 }
 
-export default memo(Chat)
+export default Chat

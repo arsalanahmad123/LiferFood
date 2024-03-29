@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, memo } from 'react'
+import React, { Fragment, useEffect, useRef } from 'react'
 import logo from '../assets/logo.png'
 import { IoIosArrowForward } from 'react-icons/io'
 import { signup } from '../Services/Authentication.js'
@@ -341,4 +341,4 @@ const SignUp = () => {
     )
 }
 
-export default memo(SignUp)
+export default SignUp

@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React from 'react'
 import { FaArrowUpLong } from 'react-icons/fa6'
 
 import Wrapper from '../Components/Wrapper'
@@ -90,4 +90,4 @@ const Revenue = ({ toggleRevenueForm }) => {
     )
 }
 
-export default AppLayout(memo)(Revenue)
+export default AppLayout()(Revenue)

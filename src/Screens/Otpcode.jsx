@@ -1,4 +1,4 @@
-import React, { Fragment, memo } from 'react'
+import React, { Fragment } from 'react'
 import logo from '../assets/logo.png'
 import OTP from './OTP'
 
@@ -26,4 +26,4 @@ const Otpcode = () => {
     )
 }
 
-export default memo(Otpcode)
+export default Otpcode

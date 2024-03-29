@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback, memo } from 'react'
+import React, { useRef, useEffect, useState, useCallback,  } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -159,4 +159,4 @@ const OTP = () => {
     )
 }
 
-export default memo(OTP)
+export default (OTP)

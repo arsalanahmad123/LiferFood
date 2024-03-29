@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { GoBell } from 'react-icons/go'
 import { BiSolidMessageSquareDots, BiSearch } from 'react-icons/bi'
 import { HiMiniBars3BottomLeft } from 'react-icons/hi2'
@@ -13,23 +13,23 @@ const Navbar = () => {
 
     const { logoutUser, loggedIn, user } = useAuth()
 
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         toast('You have been logged out')
         logoutUser()
-    }
-    const toggleChat = () => {
-        setShowChat(!showChat)
+    }, [logoutUser])
 
+    const toggleChat = useCallback(() => {
+        setShowChat((prevShowChat) => !prevShowChat)
         if (showNotification) {
             setShowNotification(false)
         }
-    }
-    const toggleNotification = () => {
-        setShowNotification(!showNotification)
+    }, [showNotification])
+    const toggleNotification = useCallback(() => {
+        setShowNotification((prevShowNotification) => !prevShowNotification)
         if (showChat) {
             setShowChat(false)
         }
-    }
+    }, [showChat])
 
     const handleSidebarToggle = () => {
         const sidebar = document.getElementById('sidebar')
@@ -66,6 +66,7 @@ const Navbar = () => {
                             <div
                                 className='bg-white shadow-xl flex flex-col absolute md:w-[300px] w-[200px] top-10 -right-28 rounded-lg max-h-[300px] scrollable '
                                 style={{ zIndex: 9999 }}
+                                id='notifications'
                             >
                                 <div className='bg-slate-200 flex flex-row justify-between items-center p-2 rounded-tl-lg'>
                                     <h4 className='text-sm'>
@@ -183,6 +184,7 @@ const Navbar = () => {
                         <div
                             className='bg-white shadow-xl flex flex-col absolute md:w-[300px] w-[200px] top-10 -right-28 rounded-lg max-h-[300px] scrollable '
                             style={{ zIndex: 9999 }}
+                            id='chats'
                         >
                             <div className='bg-slate-200 flex flex-row justify-between items-center p-2 rounded-tl-lg'>
                                 <h4 className='text-sm'>DMs From Customers</h4>

@@ -3,7 +3,6 @@ import { FaRegCalendarCheck } from 'react-icons/fa6'
 import { FaArrowUp } from 'react-icons/fa6'
 import HeaderSection from '../Components/HeaderSection'
 import Wrapper from '../Components/Wrapper'
-import { memo } from 'react'
 import AppLayout from '../Layout/AppLayout'
 
 const Home = () => {
@@ -84,4 +83,4 @@ const Home = () => {
     )
 }
 
-export default AppLayout(memo)(Home)
+export default AppLayout()(Home)

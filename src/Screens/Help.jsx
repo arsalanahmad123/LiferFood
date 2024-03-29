@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react'
+import React, { useState,  } from 'react'
 import { MdOutlineLiveHelp } from 'react-icons/md'
 import Wrapper from '../Components/Wrapper'
 import HeaderSection from '../Components/HeaderSection'
@@ -143,4 +143,4 @@ const Help = ({ toggleRepresentator }) => {
     )
 }
 
-export default AppLayout(memo)(Help)
+export default AppLayout()(Help)
