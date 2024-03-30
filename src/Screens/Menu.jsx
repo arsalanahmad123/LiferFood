@@ -35,8 +35,6 @@ const MenuPage = () => {
         getAllProducts()
     }, [])
 
-    console.log(products)
-
     const deleteProduct = async (id) => {
         if (window.confirm('Are you sure you want to delete this item?')) {
             try {

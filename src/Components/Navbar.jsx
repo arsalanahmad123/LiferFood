@@ -5,8 +5,9 @@ import { HiMiniBars3BottomLeft } from 'react-icons/hi2'
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../Context/AuthContext'
 import toast from 'react-hot-toast'
+import { FormattedMessage, IntlProvider } from 'react-intl';
 
-const Navbar = () => {
+const Navbar = ({ changeLocale, locale }) => {
     const [showProfileDropdown, setShowProfileDropdown] = useState(false)
     const [showChat, setShowChat] = useState(false)
     const [showNotification, setShowNotification] = useState(false)
@@ -48,6 +49,7 @@ const Navbar = () => {
 
     return (
         <>
+
             <div className='w-full flex flex-row px-10 lg:justify-end justify-between items-center md:gap-x-3 p-4'>
                 <div className='lg:hidden bg-linkBg p-2 rounded-lg text-textActive cursor-pointer'>
                     <HiMiniBars3BottomLeft
@@ -55,6 +57,13 @@ const Navbar = () => {
                         onClick={handleSidebarToggle}
                     />
                 </div>
+                <nav>
+                    <select value={locale} onChange={(e) => changeLocale(e.target.value)}>
+                        <option value="en">English</option>
+                        <option value="de">German</option>
+                    </select>
+                </nav>
+
                 <div className='flex flex-row gap-x-3 md:border-r md:border-gray-400 px-5 md:pl-[40%] relative'>
                     <div
                         className='bg-linkBg p-2 rounded-lg font-extrabold cursor-pointer relative'
@@ -70,7 +79,7 @@ const Navbar = () => {
                             >
                                 <div className='bg-slate-200 flex flex-row justify-between items-center p-2 rounded-tl-lg'>
                                     <h4 className='text-sm'>
-                                        DMs From Customers
+                                        <FormattedMessage id='DMs_from_customers' />
                                     </h4>
                                     <BiSearch />
                                 </div>
@@ -187,7 +196,7 @@ const Navbar = () => {
                             id='chats'
                         >
                             <div className='bg-slate-200 flex flex-row justify-between items-center p-2 rounded-tl-lg'>
-                                <h4 className='text-sm'>DMs From Customers</h4>
+                                <h4 className='text-sm'><FormattedMessage id='DMs_from_customers' /></h4>
                                 <BiSearch />
                             </div>
                             <div className=' max-h-full py-1 px-1'>
@@ -286,7 +295,7 @@ const Navbar = () => {
                     )}
                 </div>
                 <div className='text-primary hidden md:block'>
-                    <span className='text-[15px]'>Welcome,{'   '}</span>
+                    <span className='text-[15px]'><FormattedMessage id='welcome' />,{'   '}</span>
                     <span className='font-semibold'>{user?.first_name}</span>
                 </div>
                 <div className='relative'>
@@ -300,9 +309,8 @@ const Navbar = () => {
                     />
 
                     <div
-                        className={`px-5 py-3 bg-white rounded-md absolute top-[50px] right-2 transition-all duration-500 ease-in-out ${
-                            showProfileDropdown ? 'opacity-100' : 'opacity-0'
-                        }`}
+                        className={`px-5 py-3 bg-white rounded-md absolute top-[50px] right-2 transition-all duration-500 ease-in-out ${showProfileDropdown ? 'opacity-100' : 'opacity-0'
+                            }`}
                     >
                         <ul className='flex flex-col gap-y-3'>
                             <li className='cursor-pointer'>Profile</li>

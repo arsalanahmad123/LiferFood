@@ -3,12 +3,14 @@ import {
     IoDocumentOutline,
     IoBicycleOutline,
 } from 'react-icons/io5'
-import { memo } from 'react'
+import React, { memo } from 'react'
 import { RiMenu2Fill } from 'react-icons/ri'
 import { FiClock } from 'react-icons/fi'
 import { TfiWallet } from 'react-icons/tfi'
 import { MdOutlineContactSupport } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
+import { FormattedMessage, IntlProvider } from 'react-intl';
+
 
 const SideBar = () => {
     return (
@@ -31,7 +33,7 @@ const SideBar = () => {
                                 to={'/'}
                             >
                                 <IoHomeOutline size={18} />
-                                <span> Dashboard</span>
+                                <span><FormattedMessage id='dashboard'/></span>
                             </NavLink>
                         </li>
                         <li className=' text-[14px] relative w-full'>
@@ -40,7 +42,7 @@ const SideBar = () => {
                                 to={'/menu'}
                             >
                                 <RiMenu2Fill size={18} />
-                                <span> Menu</span>
+                                <span><FormattedMessage id='menu'/></span>
                             </NavLink>
                         </li>
                         <li className='  text-[14px] relative w-full '>
@@ -49,7 +51,7 @@ const SideBar = () => {
                                 to={'/order-history'}
                             >
                                 <FiClock size={18} />
-                                <span>Order History</span>
+                                <span><FormattedMessage id='order_history'/></span>
                             </NavLink>
                         </li>
                         <li className='  text-[14px] relative w-full'>
@@ -58,7 +60,7 @@ const SideBar = () => {
                                 to={'/orders'}
                             >
                                 <IoDocumentOutline size={18} />
-                                <span> Orders</span>
+                                <span><FormattedMessage id='orders'/></span>
                             </NavLink>
                         </li>
                         <li className='  text-[14px] relative w-full'>
@@ -67,7 +69,7 @@ const SideBar = () => {
                                 to={'/revenue'}
                             >
                                 <TfiWallet size={18} />
-                                <span> Revenue</span>
+                                <span><FormattedMessage id='revenue'/> </span>
                             </NavLink>
                         </li>
                         <li className='  text-[14px] relative w-full'>
@@ -76,7 +78,7 @@ const SideBar = () => {
                                 to={'/riders'}
                             >
                                 <IoBicycleOutline size={18} />
-                                <span> Riders</span>
+                                <span><FormattedMessage id='riders'/> </span>
                             </NavLink>
                         </li>
                         <li className='  text-[14px] relative w-full'>
@@ -85,7 +87,7 @@ const SideBar = () => {
                                 to={'/help'}
                             >
                                 <MdOutlineContactSupport size={18} />
-                                <span> Help and Support</span>
+                                <span><FormattedMessage id='help_and_support'/></span>
                             </NavLink>
                         </li>
                     </ul>

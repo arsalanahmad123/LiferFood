@@ -7,7 +7,7 @@ const AppLayout = () => (WrappedComponent) => {
     return (props) => {
         return (
             <>
-                <Navbar />
+                {/* <Navbar /> */}
                 <SideBar />
                 <MemoWrappedComponent {...props} />
             </>

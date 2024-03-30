@@ -20,10 +20,19 @@ import { useAuth } from './Context/AuthContext.jsx'
 import ProtectedRoute from './Components/ProtectedRoute'
 import { Toaster } from 'react-hot-toast'
 import Loader from './Components/Loader'
+import Navbar from './Components/Navbar.jsx'
 const OTP = lazy(() => import('./Screens/OTP'))
 const RegRestaurant = lazy(() => import('./Screens/RegRestaurant'))
 const Chat = lazy(() => import('./Screens/Chat'))
 const Notification = lazy(() => import('./Screens/Notification'))
+import messages_en from './language/en.json';
+import messages_de from './language/de.json';
+import { IntlProvider } from 'react-intl';
+
+const messages = {
+    en: messages_en,
+    de: messages_de,
+};
 
 function App() {
     const [overlay, setOverlay] = useState(false)
@@ -42,104 +51,112 @@ function App() {
         setShowRevenueForm(!showRevenueForm)
         setOverlay(!overlay)
     }
+    const [locale, setLocale] = useState('en');
+
+    const changeLocale = (newLocale) => {
+        setLocale(newLocale);
+    };
 
     return (
         <>
-            <Toaster />
-            {loading && <Loader />}
-            <BrowserRouter>
-                <Suspense fallback={<Loader />}>
-                    <Routes>
-                        <Route element={<ProtectedRoute />}>
-                            <Route key='home' element={<Home />} path='/' />
-                            <Route
-                                key='order-history'
-                                element={<OrderHistory />}
-                                path='/order-history'
-                            />
-                            <Route
-                                key='orders'
-                                element={<Orders />}
-                                path='/orders'
-                            />
-                            <Route
-                                key={'RegRestaurant'}
-                                element={<RegRestaurant />}
-                                path='register-restaurant'
-                            />
-                            <Route
-                                key='help'
-                                element={
-                                    <Help
-                                        toggleRepresentator={
-                                            toggleRepresentator
-                                        }
-                                    />
-                                }
-                                path='/help'
-                            />
-                            <Route
-                                key='revenue'
-                                element={
-                                    <Revenue
-                                        toggleRevenueForm={toggleRevenueForm}
-                                    />
-                                }
-                                path='/revenue'
-                            />
-                            <Route
-                                key='riders'
-                                element={<Rider />}
-                                path='/riders'
-                            />
-                            <Route
-                                key='help-form'
-                                element={<HelpForm />}
-                                path='/help-form'
-                            />
-                            <Route
-                                key='menu'
-                                element={<Menu />}
-                                path='/menu/*'
-                            />
-                            <Route
-                                key='add-menu'
-                                element={<AddMenu />}
-                                path='/add-menu'
-                            />
-                            <Route key='chat' element={<Chat />} path='/chat' />
-                            <Route
-                                key='notification'
-                                element={<Notification />}
-                                path='/notification'
-                            />
-                        </Route>
-                        <Route element={<Login />} path='/account/login' />
-                        <Route element={<Signup />} path='/account/signup' />
-                        <Route element={<OTP />} path='/account/verification' />
-                    </Routes>
-                </Suspense>
-            </BrowserRouter>
+            <IntlProvider locale={locale} messages={messages[locale]}>
+                <Toaster />
+                {loading && <Loader />}
+                <BrowserRouter>
+                    <Suspense fallback={<Loader />}>
+                        <Navbar locale={locale} changeLocale={changeLocale}/>
+                        <Routes>
+                            <Route element={<ProtectedRoute />}>
+                                <Route key='home' element={<Home />} path='/' />
+                                <Route
+                                    key='order-history'
+                                    element={<OrderHistory />}
+                                    path='/order-history'
+                                />
+                                <Route
+                                    key='orders'
+                                    element={<Orders />}
+                                    path='/orders'
+                                />
+                                <Route
+                                    key={'RegRestaurant'}
+                                    element={<RegRestaurant />}
+                                    path='register-restaurant'
+                                />
+                                <Route
+                                    key='help'
+                                    element={
+                                        <Help
+                                            toggleRepresentator={
+                                                toggleRepresentator
+                                            }
+                                        />
+                                    }
+                                    path='/help'
+                                />
+                                <Route
+                                    key='revenue'
+                                    element={
+                                        <Revenue
+                                            toggleRevenueForm={toggleRevenueForm}
+                                        />
+                                    }
+                                    path='/revenue'
+                                />
+                                <Route
+                                    key='riders'
+                                    element={<Rider />}
+                                    path='/riders'
+                                />
+                                <Route
+                                    key='help-form'
+                                    element={<HelpForm />}
+                                    path='/help-form'
+                                />
+                                <Route
+                                    key='menu'
+                                    element={<Menu />}
+                                    path='/menu/*'
+                                />
+                                <Route
+                                    key='add-menu'
+                                    element={<AddMenu />}
+                                    path='/add-menu'
+                                />
+                                <Route key='chat' element={<Chat />} path='/chat' />
+                                <Route
+                                    key='notification'
+                                    element={<Notification />}
+                                    path='/notification'
+                                />
+                            </Route>
+                            <Route element={<Login />} path='/account/login' />
+                            <Route element={<Signup />} path='/account/signup' />
+                            <Route element={<OTP />} path='/account/verification' />
+                        </Routes>
+                    </Suspense>
+                </BrowserRouter>
 
-            {showRepresentator && (
-                <>
-                    {createPortal(
-                        <Representator />,
-                        document.getElementById('modal'),
-                    )}
-                    <Overlay toggleOverlay={toggleRepresentator} />
-                </>
-            )}
+                {showRepresentator && (
+                    <>
+                        {createPortal(
+                            <Representator />,
+                            document.getElementById('modal'),
+                        )}
+                        <Overlay toggleOverlay={toggleRepresentator} />
+                    </>
+                )}
 
-            {showRevenueForm && (
-                <>
-                    {createPortal(
-                        <AddRevenue />,
-                        document.getElementById('modal'),
-                    )}
-                    <Overlay toggleOverlay={toggleRevenueForm} />
-                </>
-            )}
+                {showRevenueForm && (
+                    <>
+                        {createPortal(
+                            <AddRevenue />,
+                            document.getElementById('modal'),
+                        )}
+                        <Overlay toggleOverlay={toggleRevenueForm} />
+                    </>
+                )}
+            </IntlProvider>
         </>
     )
 }
