@@ -3,8 +3,9 @@ import { MdOutlineLiveHelp } from 'react-icons/md'
 import Wrapper from '../Components/Wrapper'
 import HeaderSection from '../Components/HeaderSection'
 import { IoMdArrowDropdown } from 'react-icons/io'
-import { NavLink } from 'react-router-dom'
+import { Form, NavLink } from 'react-router-dom'
 import AppLayout from '../Layout/AppLayout'
+import { FormattedMessage } from 'react-intl'
 const Help = ({ toggleRepresentator }) => {
     const [selectedRow, setSelectedRow] = useState(null)
 
@@ -41,8 +42,8 @@ const Help = ({ toggleRepresentator }) => {
                 <div className='relative'>
                     <div className=''>
                         <HeaderSection
-                            heading='Help'
-                            para={'How can we help you?'}
+                            heading={<FormattedMessage id='Help'/>}
+                            para={<FormattedMessage id='How can we help you?'/>}
                         />
                         <div className='pt-5'>
                             <div className='flex flex-col md:flex-row gap-4 md:px-20 px-8 py-10'>
@@ -55,12 +56,10 @@ const Help = ({ toggleRepresentator }) => {
                                     </div>
                                     <div className='text-center md:text-left'>
                                         <h6 className='md:text-xl text-lg font-semibold text-white'>
-                                            Create Ticket
+                                            <FormattedMessage id='Create Ticket'/>
                                         </h6>
                                         <p className='text-white text-[14px] md:text-base'>
-                                            To initiate a one to one chat with
-                                            the support team, please click on
-                                            this Button
+                                            <FormattedMessage id="To initiate a one-to-one chat with the support team, please click on this Button"/>
                                         </p>
                                     </div>
                                 </NavLink>
@@ -73,12 +72,10 @@ const Help = ({ toggleRepresentator }) => {
                                     </div>
                                     <div className='text-center md:text-left'>
                                         <h6 className='md:text-xl text-lg font-semibold text-white'>
-                                            Agent
+                                            <FormattedMessage id='Agent'/>
                                         </h6>
                                         <p className='text-white text-[14px] md:text-base'>
-                                            To initiate a one-to-one chat with
-                                            the support team, please click on
-                                            this Button
+                                           <FormattedMessage id="To initiate a one-to-one chat with the support team, please click on this Button"/>
                                         </p>
                                     </div>
                                 </div>
@@ -86,7 +83,7 @@ const Help = ({ toggleRepresentator }) => {
                             <div className='flex justify-center align-center flex-col bg-white p-1 rounded-lg lg:mr-20 mt-6 py-2 mx-5 lg:mx-0'>
                                 <div className='py-3'>
                                     <h6 className='text-xl font-bold pl-3'>
-                                        FAQS
+                                        <FormattedMessage id="FAQS"/>
                                     </h6>
                                 </div>
                                 <table className='w-full'>
@@ -95,8 +92,7 @@ const Help = ({ toggleRepresentator }) => {
                                             <React.Fragment key={item.id}>
                                                 <tr className=' border-b'>
                                                     <td className='px-4 py-2 '>
-                                                        How can I update my
-                                                        restaurant's menu?
+                                                        <FormattedMessage id="How can I update my restaurant's menu?"/>
                                                     </td>
                                                     <td className='px-4 py-2'>
                                                         <IoMdArrowDropdown

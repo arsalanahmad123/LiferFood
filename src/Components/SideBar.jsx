@@ -9,7 +9,7 @@ import { FiClock } from 'react-icons/fi'
 import { TfiWallet } from 'react-icons/tfi'
 import { MdOutlineContactSupport } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
-import { FormattedMessage, IntlProvider } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 
 const SideBar = () => {

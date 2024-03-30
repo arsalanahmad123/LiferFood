@@ -3,7 +3,7 @@ import Wrapper from '../Components/Wrapper'
 import RIderMenu from '../Components/RIderMenu'
 import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import { useNavigate } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import AddMenu from './AddMenu'
 import { Routes, Route } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
@@ -12,6 +12,7 @@ import resturantApi from '../Services/restaurantapi'
 import toast from 'react-hot-toast'
 import Spin from '../Components/Spin'
 import EditProduct from './EditProduct'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const MenuPage = () => {
     const navigate = useNavigate()
@@ -35,8 +36,11 @@ const MenuPage = () => {
         getAllProducts()
     }, [])
 
+    const intl = useIntl();
+    const confirmMessage = intl.formatMessage({ id: 'Are you sure you want to delete this item?' });
+
     const deleteProduct = async (id) => {
-        if (window.confirm('Are you sure you want to delete this item?')) {
+        if (window.confirm(confirmMessage)) {
             try {
                 const response = await resturantApi.delete(`/products/${id}`)
                 toast.success(response.data.message)
@@ -54,26 +58,26 @@ const MenuPage = () => {
             <div className='flex flex-col'>
                 <RIderMenu
                     toggleRiderForm={toggleRiderForm}
-                    heading={'Menu Control Panel'}
-                    para={'Simplified Menu Management'}
+                    heading={<FormattedMessage id='menu_control_panel' />}
+                    para={<FormattedMessage id='simplified_menu_management' />}
                     image={'/src/assets/chef.png'}
-                    modalButtonText={'+ Add Item'}
+                    modalButtonText={<FormattedMessage id='+add_item' />}
                     cardsMainHeading={'Menu (Total Items)'}
                 />
                 <div className='py-8 mx-5 lg:mx-0 lg:mr-5'>
                     <h3 className='text-2xl font-semibold text-gray-800'>
-                        Menu (Total Items)
+                        <FormattedMessage id='Menu (Total Items)' />
                     </h3>
                     {fetching && (
                         <div className='flex justify-center items-center'>
                             <Spin />
                         </div>
                     )}
-                    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4'>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-4 mt-4'>
                         {products?.map((product) => {
                             return (
                                 <div
-                                    className='bg-white rounded-2xl shadow-md '
+                                    className='bg-white rounded-2xl shadow-md'
                                     key={product?.id}
                                 >
                                     <img
@@ -95,10 +99,10 @@ const MenuPage = () => {
                                                         className='form-select rounded-2xl py-0'
                                                     >
                                                         <option value='available'>
-                                                            Available
+                                                            <FormattedMessage id='Available' />
                                                         </option>
                                                         <option value='unavailable'>
-                                                            Unavailable
+                                                            <FormattedMessage id='Unavailable' />
                                                         </option>
                                                     </select>
                                                 </div>
@@ -119,7 +123,7 @@ const MenuPage = () => {
                                                     to={`/menu/edit-menu/${product?.id}`}
                                                 >
                                                     <FiEdit className='mr-1' />
-                                                    Edit
+                                                    <FormattedMessage id='Edit' />
                                                 </NavLink>
                                             </div>
                                             <div>
@@ -132,7 +136,7 @@ const MenuPage = () => {
                                                     }
                                                 >
                                                     <RiDeleteBin6Line className='mr-1' />
-                                                    Delete
+                                                    <FormattedMessage id='Delete' />
                                                 </button>
                                             </div>
                                         </div>

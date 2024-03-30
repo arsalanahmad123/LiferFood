@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom'
 import RiderForm from '../Components/RiderForm'
 import toast from 'react-hot-toast'
 import Spin from '../Components/Spin'
+import { FormattedMessage } from 'react-intl'
 
 const Rider = () => {
     const [riders, setRiders] = useState(null)
@@ -60,15 +61,15 @@ const Rider = () => {
                 <div className='flex flex-col'>
                     <RIderMenu
                         toggleRiderForm={toggleRiderForm}
-                        heading={'Riders Control Panel'}
-                        para={'Manage your riders with ease!'}
+                        heading={<FormattedMessage id='Riders Control Panel'/>}
+                        para={<FormattedMessage id='Manage your riders with ease!'/>}
                         image={'/src/assets/rider.png'}
-                        modalButtonText={'+ Add Rider'}
+                        modalButtonText={<FormattedMessage id='+ Add Rider'/>}
                         cardsMainHeading={'All Riders'}
                     />
                     <div className='py-8 mx-5 lg:mx-0 lg:mr-5'>
                         <h3 className='text-2xl font-semibold text-gray-800'>
-                            All Riders
+                           <FormattedMessage id='All Riders'/>
                         </h3>
                         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4'>
                             {fetching ? (
@@ -92,7 +93,7 @@ const Rider = () => {
                                                         Name:
                                                     </h6>
                                                     <h6 className='text-gray-800 font-medium'>
-                                                        Contact No:
+                                                        <FormattedMessage id='Contact No:'/>
                                                     </h6>
                                                     <h6 className='text-gray-800 font-medium'>
                                                         ID:
@@ -134,7 +135,7 @@ const Rider = () => {
                             )}
                             {riders?.length === 0 && (
                                 <div className='flex flex-col justify-center items-center'>
-                                    <h1>No Riders Found</h1>
+                                    <h1><FormattedMessage id='No Riders Found'/></h1>
                                 </div>
                             )}
                         </div>

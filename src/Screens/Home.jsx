@@ -4,7 +4,7 @@ import { FaArrowUp } from 'react-icons/fa6'
 import HeaderSection from '../Components/HeaderSection'
 import Wrapper from '../Components/Wrapper'
 import AppLayout from '../Layout/AppLayout'
-import { FormattedMessage, IntlProvider } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 const Home = () => {
 

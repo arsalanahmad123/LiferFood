@@ -1,4 +1,5 @@
 import React from "react";
+import { FormattedMessage } from "react-intl";
 
 const Representator = () => {
   return (
@@ -9,7 +10,7 @@ const Representator = () => {
       >
         <div className="flex flex-col ">
           <h1 className="text-2xl text-textActive md:text-center">
-            Representative Data
+            <FormattedMessage id="Representative Data"/>
           </h1>
           <div className="flex flex-row justify-between items-center mt-5 gap-x-3">
             <span className="text-orange-600 font-semibold">Name:</span>
