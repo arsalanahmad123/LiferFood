@@ -4,11 +4,12 @@ import HeaderSection from '../Components/HeaderSection'
 import { IoMdReturnLeft } from 'react-icons/io'
 import EditorComponent from '../Screens/EditorComponent'
 import AppLayout from '../Layout/AppLayout'
+import { FormattedMessage } from 'react-intl'
 
 const HelpForm = () => {
     return (
         <Wrapper>
-            <HeaderSection heading={'Help'} para={'How can we help you?'} />
+            <HeaderSection heading={<FormattedMessage id='Help'/>} para={<FormattedMessage id='How can we help you?'/>} />
             <div className='mt-10 ml-5  w-[50px] h-[50px]'>
                 <IoMdReturnLeft
                     size={30}
@@ -20,7 +21,7 @@ const HelpForm = () => {
                 <div className='bg-white rounded-lg p-8 max-w-md w-full'>
                     <div className='md:text-center'>
                         <h3 className='text-helpForm text-2xl font-semibold mb-10'>
-                            Ticket Request Form
+                            <FormattedMessage id='Ticket Request Form'/>
                         </h3>
                     </div>
                     <div className=''>
@@ -61,7 +62,7 @@ const HelpForm = () => {
                             <div className='md:items-center flex-col md:flex-row'>
                                 <div className='pb-5'>
                                     <h6 className='text-[#000] text-sm font-bold'>
-                                        Subject
+                                        <FormattedMessage id='Subject'/>
                                     </h6>
                                 </div>
                                 <div>
@@ -77,7 +78,7 @@ const HelpForm = () => {
                             <div className='flex md:items-center flex-col md:flex-row'>
                                 <div>
                                     <h6 className='text-[#000] text-sm text-left font-bold'>
-                                        Priority
+                                        <FormattedMessage id='Priority'/>
                                     </h6>
                                 </div>
                                 <div className=' flex pl-20'>
@@ -109,7 +110,7 @@ const HelpForm = () => {
                                             htmlFor='option2'
                                             className='ml-2 text-gray-700'
                                         >
-                                            Urgent
+                                            <FormattedMessage id='Urgent'/>
                                         </label>
                                     </div>
                                 </div>
@@ -119,7 +120,7 @@ const HelpForm = () => {
                             <div className=' md:items-center flex-col md:flex-row'>
                                 <div>
                                     <h6 className='text-[#000] font-bold text-sm'>
-                                        Description
+                                        <FormattedMessage id="Description"/>
                                     </h6>
                                 </div>
                                 <div>
@@ -129,7 +130,7 @@ const HelpForm = () => {
                         </div>
                         <div className='md:text-right flex justify-center'>
                             <button className='bg-[#FFB100] text-white w-44 px-4 py-3 rounded-lg font-semibold text-sm'>
-                                Create
+                                <FormattedMessage id="Create"/>
                             </button>
                         </div>
                     </div>

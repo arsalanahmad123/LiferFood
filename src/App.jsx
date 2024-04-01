@@ -25,14 +25,6 @@ const OTP = lazy(() => import('./Screens/OTP'))
 const RegRestaurant = lazy(() => import('./Screens/RegRestaurant'))
 const Chat = lazy(() => import('./Screens/Chat'))
 const Notification = lazy(() => import('./Screens/Notification'))
-import messages_en from './language/en.json';
-import messages_de from './language/de.json';
-import { IntlProvider } from 'react-intl';
-
-const messages = {
-    en: messages_en,
-    de: messages_de,
-};
 
 function App() {
     const [overlay, setOverlay] = useState(false)
@@ -51,20 +43,14 @@ function App() {
         setShowRevenueForm(!showRevenueForm)
         setOverlay(!overlay)
     }
-    const [locale, setLocale] = useState('en');
 
-    const changeLocale = (newLocale) => {
-        setLocale(newLocale);
-    };
 
     return (
         <>
-            <IntlProvider locale={locale} messages={messages[locale]}>
                 <Toaster />
                 {loading && <Loader />}
                 <BrowserRouter>
                     <Suspense fallback={<Loader />}>
-                        <Navbar locale={locale} changeLocale={changeLocale}/>
                         <Routes>
                             <Route element={<ProtectedRoute />}>
                                 <Route key='home' element={<Home />} path='/' />
@@ -156,7 +142,6 @@ function App() {
                         <Overlay toggleOverlay={toggleRevenueForm} />
                     </>
                 )}
-            </IntlProvider>
         </>
     )
 }

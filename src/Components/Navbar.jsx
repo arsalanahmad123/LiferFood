@@ -58,7 +58,7 @@ const Navbar = ({ changeLocale, locale }) => {
                     />
                 </div>
                 <nav>
-                    <select value={locale} onChange={(e) => changeLocale(e.target.value)}>
+                    <select className='rounded-full border-textActive focus:outline-none focus:ring-0 focus:border-textActive' value={locale} onChange={(e) => changeLocale(e.target.value)}>
                         <option value="en">English</option>
                         <option value="de">German</option>
                     </select>

@@ -12,6 +12,7 @@ import { getCategories, getVariants } from '../Services/Restaurant'
 import toast from 'react-hot-toast'
 import resturantApi from '../Services/restaurantapi'
 import Spin from '../Components/Spin'
+import { FormattedMessage } from 'react-intl'
 
 const AddMenu = () => {
     const [images, setImages] = useState(null)
@@ -160,8 +161,8 @@ const AddMenu = () => {
     return (
         <Wrapper>
             <HeaderSection
-                heading='Menu Control Panel'
-                para='Simplified Menu Management'
+                heading={<FormattedMessage id="menu_control_panel"/>}
+                para={<FormattedMessage id="simplified_menu_management"/>}
             />
             <form
                 onSubmit={createProduct}
@@ -174,7 +175,7 @@ const AddMenu = () => {
                             onClick={() => navigate(-1)}
                             className='cursor-pointer'
                         />
-                        <h3 className='text-2xl '>Create Menu Item</h3>
+                        <h3 className='text-2xl '><FormattedMessage id="Create Menu Item"/></h3>
                     </div>
                     <div className='flex flex-col justify-start items-start gap-y-5 w-full'>
                         <div className='bg-white rounded-lg p-5 flex flex-col gap-y-5 w-full'>
@@ -183,7 +184,7 @@ const AddMenu = () => {
                                     htmlFor='productName'
                                     className='mb-1 font-semibold text-lg'
                                 >
-                                    Product Name
+                                    <FormattedMessage id="Product Name"/>
                                 </label>
                                 <input
                                     type='text'
@@ -199,7 +200,7 @@ const AddMenu = () => {
                                     htmlFor='productDescription'
                                     className='mb-1 font-semibold text-lg'
                                 >
-                                    Product Description
+                                    <FormattedMessage id="Product Description"/>
                                 </label>
                                 <textarea
                                     name='productDescription'
@@ -215,7 +216,7 @@ const AddMenu = () => {
                                 htmlFor='images'
                                 className='font-semibold text-lg'
                             >
-                                Images
+                                <FormattedMessage id="Images"/>
                             </label>
                             <div className='border-2 border-dashed p-2'>
                                 <label
@@ -223,9 +224,9 @@ const AddMenu = () => {
                                     className='cursor-pointer flex flex-col justify-center items-center gap-y-1 opacity-60 '
                                 >
                                     <FaCloudUploadAlt size={25} />
-                                    <h4>Upload Images</h4>
+                                    <h4><FormattedMessage id="Upload Images"/></h4>
                                     <span className='text-sm text-gray-500'>
-                                        Select one or more images
+                                        <FormattedMessage id="Select one or more images"/>
                                     </span>
                                     <input
                                         type='file'
@@ -255,7 +256,7 @@ const AddMenu = () => {
                                 htmlFor='Product Category'
                                 className='mb-1 font-semibold text-lg'
                             >
-                                Select Category
+                                <FormattedMessage id="Select Category"/>
                             </label>
                             <div className='flex flex-row flex-wrap gap-y-2 justify-start items-center gap-x-3 font-semibold'>
                                 {loading ? (
@@ -297,7 +298,7 @@ const AddMenu = () => {
                             htmlFor='Variants'
                             className='mb-1 font-semibold text-lg'
                         >
-                            Variants
+                          <FormattedMessage id="Variants"/>
                         </label>
                         {selectedVariants?.length > 0 && (
                             <div className='flex flex-row justify-between items-center'>
@@ -359,7 +360,7 @@ const AddMenu = () => {
                                                         id={`isDiscount-${variant.id}`}
                                                         className='mr-1 rounded-md outline-none ring-0 focus:ring-0 focus:outline-none'
                                                     />
-                                                    Is Discount
+                                                    <FormattedMessage id="Is Discount"/>
                                                 </label>
                                                 <input
                                                     type='number'
@@ -377,7 +378,7 @@ const AddMenu = () => {
                                                         )
                                                     }
                                                 >
-                                                    Add
+                                                    <FormattedMessage id="Add"/>
                                                 </button>
                                             </div>
                                         )}
@@ -391,13 +392,13 @@ const AddMenu = () => {
                             type='button'
                             className='bg-textActive text-white rounded-md px-2 py-1'
                         >
-                            New Category
+                            <FormattedMessage  id="New Category"/>
                         </button>
                         <button
                             type='button'
                             className='bg-textActive text-white rounded-md px-2 py-1'
                         >
-                            New Variant
+                            <FormattedMessage id="New Variant"/>
                         </button>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ import Wrapper from '../Components/Wrapper'
 import SearchArea from '../Components/SearchArea'
 import Table from '../Components/Table'
 import AppLayout from '../Layout/AppLayout'
+import { FormattedMessage } from 'react-intl'
 const Orders = () => {
     const tableRows = [
         'ID',
@@ -36,8 +37,8 @@ const Orders = () => {
         <>
             <Wrapper>
                 <HeaderSection
-                    heading='Current Orders'
-                    para={'Live Order Logs!'}
+                    heading={<FormattedMessage id="Current Orders"/>}
+                    para={<FormattedMessage id="Live Order Logs!"/>}
                 />
                 <SearchArea />
                 <div className='w-full lg:pl-0 lg:pr-4 mt-2 md:pl-2 md:pr-2'>

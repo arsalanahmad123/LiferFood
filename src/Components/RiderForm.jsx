@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import restaurantApi from '../Services/restaurantapi'
 import toast from 'react-hot-toast'
+import { FormattedMessage } from 'react-intl'
 
 const RiderForm = ({ toggleRiderForm, toggleLoading }) => {
     const [imagePreview, setImagePreview] = useState(null)
@@ -64,7 +65,7 @@ const RiderForm = ({ toggleRiderForm, toggleLoading }) => {
                         className='font-semibold text-xl md:text-2xl text-center mb-2 text-textActive
           '
                     >
-                        Add Rider
+                       <FormattedMessage id=" Add Rider"/>
                     </h1>
                     <div className='mb-3 grid grid-cols-12 gap-x-3 '>
                         <div className='flex flex-col col-span-6 gap-y-1'>
@@ -72,7 +73,7 @@ const RiderForm = ({ toggleRiderForm, toggleLoading }) => {
                                 htmlFor='firstname'
                                 className='text-sm font-bold'
                             >
-                                First Name
+                                <FormattedMessage id="First Name"/>
                             </label>
                             <input
                                 type='text'
@@ -104,7 +105,7 @@ const RiderForm = ({ toggleRiderForm, toggleLoading }) => {
                                 htmlFor='lastname'
                                 className='text-sm font-bold'
                             >
-                                Last Name
+                                <FormattedMessage id="Last Name"/>
                             </label>
                             <input
                                 type='text'
@@ -164,7 +165,7 @@ const RiderForm = ({ toggleRiderForm, toggleLoading }) => {
                                 htmlFor='password'
                                 className='text-sm font-bold'
                             >
-                                Password
+                                <FormattedMessage id="Password"/>
                             </label>
                             <input
                                 type='password'
@@ -198,7 +199,7 @@ const RiderForm = ({ toggleRiderForm, toggleLoading }) => {
                                 htmlFor='phone'
                                 className='text-sm font-bold'
                             >
-                                Contact
+                                <FormattedMessage id="Contact"/>
                             </label>
                             <input
                                 type='text'
@@ -235,7 +236,7 @@ const RiderForm = ({ toggleRiderForm, toggleLoading }) => {
                         type='submit'
                         className='bg-textActive text-white py-1 font-semibold rounded-lg'
                     >
-                        Add
+                        <FormattedMessage id="Add"/>
                     </button>
                 </form>
             </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { FormattedMessage } from "react-intl";
 
 const AddRevenue = () => {
   return (
@@ -14,7 +15,7 @@ const AddRevenue = () => {
               voluptates.
             </span>
             <button className="bg-gray-200 text-gray-800 font-medium px-16 py-3 rounded-lg shadow-inner shadow-gray-300 mr-auto">
-              Submit
+              <FormattedMessage id="Submit"/>
             </button>
           </div>
           <img src="/src/assets/money.png" alt="" className="w-40" />
@@ -25,7 +26,7 @@ const AddRevenue = () => {
               htmlFor="revenueDescription"
               className="font-semibold text-gray-700"
             >
-              Revenue Description
+              <FormattedMessage id="Revenue Description"/>
             </label>
             <textarea
               name="revenueDescription"
@@ -37,7 +38,7 @@ const AddRevenue = () => {
           </div>
           <div className="flex flex-col">
             <label htmlFor="amount" className="font-semibold text-gray-700">
-              Add Amount
+              <FormattedMessage id="Add Amount"/>
             </label>
             <input
               type="number"
